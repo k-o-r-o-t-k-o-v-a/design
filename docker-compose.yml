@@ -1,0 +1,36 @@
+version: '3.8'
+services:
+  backend:
+    build: ./backend
+    ports:
+      - '${BACKEND_PORT}:${BACKEND_PORT}'
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_PORT: ${DB_DOCKER_PORT}
+      DB_NAME: ${DB_NAME}
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        - API_BASE_URL='${API_BASE_URL}'
+    ports:
+      - '${FRONTEND_LOCAL_PORT}:${FRONTEND_DOCKER_PORT}'
+    depends_on:
+      - backend
+  db:
+    image: mysql:8.0
+    restart: unless-stopped
+    ports:
+      - "${DB_LOCAL_PORT}:${DB_DOCKER_PORT}"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+    volumes:
+      - db:/var/lib/mysql
+
+volumes:
+  db:
