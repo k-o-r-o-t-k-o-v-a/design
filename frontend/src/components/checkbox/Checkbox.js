@@ -26,19 +26,19 @@ const StyledCheckboxDefault = styled(StyledCheckbox)`
 		props.theme.colors.primary0
 	};
 	border: 2px solid ${props => props.theme.colors.primary20};
-
+	
 	:hover > div {
 		background: ${props => props.disabled ?
-			props.theme.colors.primary10 :
-			props.theme.colors.primary20
-		}
+		props.theme.colors.primary10 :
+		props.theme.colors.primary20
+	}
 	}
 
 	:active > div {
 		background: ${props => props.disabled ?
-			props.theme.colors.primary10 :
-			props.theme.colors.primary0
-		};
+		props.theme.colors.primary10 :
+		props.theme.colors.primary0
+	};
 	}
 `;
 
@@ -54,31 +54,31 @@ const StyledCheckboxActive = styled(StyledCheckbox)`
 
 	> div {
 		background: ${props => props.disabled ?
-			props.theme.colors.primary20 :
-			props.theme.colors.primary0
-		};
-	}
+		props.theme.colors.primary20 :
+		props.theme.colors.primary0
+	};
+	} 
 
 	:hover {
 		background: ${props => props.disabled ?
-			props.theme.colors.primary0 :
-			props.theme.colors.succsess20
-		};
+		props.theme.colors.primary0 :
+		props.theme.colors.succsess20
+	};
 		border: 2px solid ${props => props.disabled ?
-			props.theme.colors.primary20 :
-			props.theme.colors.succsess20
-		};
+		props.theme.colors.primary20 :
+		props.theme.colors.succsess20
+	};
 	}
 
 	:active {
 		background: ${props => props.disabled ?
-			props.theme.colors.primary0 :
-			props.theme.colors.succsess60
-		};
-		border: 2px solid ${props => props.disabled ?
-			props.theme.colors.primary20 :
-			props.theme.colors.succsess60
-		};
+		props.theme.colors.primary0 :
+		props.theme.colors.succsess60
+	};
+	border: 2px solid ${props => props.disabled ?
+		props.theme.colors.primary20 :
+		props.theme.colors.succsess60
+	};
 	}
 `;
 

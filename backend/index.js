@@ -6,13 +6,20 @@ const swaggerJsdoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 
 const sequelize = require('./utils/database');
-const createDefaultBaseColors = require('./utils/createDefaultBaseColors')
+const createDefaultBaseColor = require('./utils/createBaseColors');
 
-const userRouter = require('./routes/user');
-const baseColorsRouter = require('./routes/base-colors');
-const authRouter = require('./routes/auth');
-const workspacesRouter = require('./routes/workspaces');
-const boardsRouter = require('./routes/boards');
+const userRouter = require('./routes/userRouter');
+const baseColorsRouter = require('./routes/baseColorsRouter');
+const authRouter = require('./routes/authRouter');
+const workspacesRouter = require('./routes/workspaceRouter');
+const boardsRouter = require('./routes/boardRouter');
+const columnsRouter = require('./routes/columnRouter');
+const tasksRouter = require('./routes/taskRouter');
+const notificationsRouter = require('./routes/notificationRouter');
+const tagsRouter = require('./routes/tagRouter');
+const schedulesRouter = require('./routes/scheduleRouter');
+
+const router = require('./routes');
 
 dotenv.config();
 
@@ -22,9 +29,9 @@ const app = express();
 
 const corsOptions = {
 	origin: [
-		//"http://localhost",
+		"http://localhost",
 		"http://localhost:80",
-		//"http://localhost:8000",
+		// "http://localhost:8000",
 		"http://localhost:3000",
 		"http://localhost:6006"
 	],
@@ -60,16 +67,23 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // 	swaggerUi.setup(specs, { explorer: true })
 // );
 
-app.use('/user', userRouter);
-app.use('/base-colors', baseColorsRouter);
-app.use('/auth', authRouter);
-app.use('/workspaces', workspacesRouter);
-app.use('/boards', boardsRouter);
+router(app);
+
+// app.use('/user', userRouter);
+// app.use('/base-colors', baseColorsRouter);
+// // app.use('/auth', authRouter);
+// app.use('/workspaces', workspacesRouter);
+// app.use('/boards', boardsRouter);
+// app.use('/columns', columnsRouter);
+// app.use('/tasks', tasksRouter);
+// app.use('/notifications', notificationsRouter);
+// app.use('/tags', tagsRouter)
+// app.use('/schedules', schedulesRouter)
 
 const start = async () => {
 	try {
 		await sequelize.sync();
-		await createDefaultBaseColors();
+		await createDefaultBaseColor();
 		app.listen(PORT, () => {
 			console.log(`Server is running at ${PORT}`);
 		});

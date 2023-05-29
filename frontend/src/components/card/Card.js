@@ -11,14 +11,14 @@ const StyledCard = styled.div`
 `;
 
 const Card = ({ onClick, cursor, children }) => {
-    return (
-        <StyledCard
-            cursor={cursor}
-            onClick={onClick}
-        >
-            {children}
-        </StyledCard>
-    );
+	return (
+		<StyledCard
+			cursor={cursor}
+			onClick={onClick}
+		>
+			{children}
+		</StyledCard>
+	);
 };
 
 export default Card;

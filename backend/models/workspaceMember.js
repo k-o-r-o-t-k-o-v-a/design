@@ -8,9 +8,9 @@ class WorkspaceMember extends Sequelize.Model { }
 
 WorkspaceMember.init({
 	role: {
-		type: DataTypes.ENUM('admin', 'user'),
+		type: DataTypes.ENUM('admin', 'user', 'invited'),
 		allowNull: false,
-		defaultValue: 'user',
+		defaultValue: 'invited',
 	}
 }, {
 	sequelize,

@@ -8,31 +8,31 @@ import Theme from '../src/styles/Theme';
 import GlobalStyle from '../src/styles/GlobalStyle';
 
 export const decorators = [
-    (Story) => (
-        <Provider store={store}>
-            <Theme>
-                <GlobalStyle />
-                <Router>
-                    <Story />
-                </Router>
-            </Theme>
-        </Provider>
-    ),
+	(Story) => (
+		<Provider store={store}>
+			<Theme>
+				<GlobalStyle />
+				<Router>
+					<Story />
+				</Router>
+			</Theme>
+		</Provider>
+	),
 ];
 
 store.dispatch(fetchColorsBaseById(1));
 
 /** @type { import('@storybook/react').Preview } */
 const preview = {
-    parameters: {
-        actions: { argTypesRegex: "^on[A-Z].*" },
-        controls: {
-            matchers: {
-                color: /(background|color)$/i,
-                date: /Date$/,
-            },
-        },
-    },
+	parameters: {
+		actions: { argTypesRegex: "^on[A-Z].*" },
+		controls: {
+			matchers: {
+				color: /(background|color)$/i,
+				date: /Date$/,
+			},
+		},
+	},
 };
 
 export default preview;

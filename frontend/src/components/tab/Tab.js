@@ -9,10 +9,10 @@ const StyledTab = styled.ul`
 	align-items: stretch;
 	gap: ${props => props.variant === 'primary' ? '24px' : '4px'};
 	border-bottom: ${props =>
-    props.variant === 'primary' ?
-        `2px solid ${props.theme.colors.primary20}` :
-        'none'
-};
+		props.variant === 'primary' ?
+			`2px solid ${props.theme.colors.primary20}` :
+			'none'
+	};
 `;
 
 const StyledItem = styled.li`
@@ -29,12 +29,12 @@ const StyledItem = styled.li`
 	color: ${props => props.theme.colors.primary100};
 	border-radius: ${props => props.variant === "primary" ? 'none' : '8px'};
 	background: ${props => {
-    if (props.variant === 'primary')
-        return 'transparent';
-    if (props.variant === 'secondary' && props.active)
-        return props.theme.colors.succsess10;
-    return props.theme.colors.transparent
-}};
+		if (props.variant === 'primary')
+			return 'transparent';
+		if (props.variant === 'secondary' && props.active)
+			return props.theme.colors.succsess10;
+		return props.theme.colors.transparent
+	}};
 	cursor: pointer;
 
 	&:after {
@@ -53,9 +53,9 @@ const StyledItem = styled.li`
 	&:hover {
 		${props => props.variant === 'secondary' && `
 			background: ${props.active ?
-    props.theme.colors.succsess10 :
-    props.theme.colors.primary10
-};
+			props.theme.colors.succsess10 :
+			props.theme.colors.primary10
+		};
 		`}
 		&:before {
 			${props => props.variant === 'primary' && `
@@ -74,30 +74,30 @@ const StyledItem = styled.li`
 
 
 const Tab = ({ variant, tabList, activeItemId, onSetActiveItemId }) => {
-    return (
-        <StyledTab variant={variant}>
-            {tabList?.map(({ id, name }) =>
-                <StyledItem
-                    key={id}
-                    variant={variant}
-                    active={id === activeItemId}
-                    onClick={() => onSetActiveItemId(id)}
-                >
-                    {name}
-                </StyledItem>
-            )}
-        </StyledTab>
-    );
+	return (
+		<StyledTab variant={variant}>
+			{tabList?.map(({ id, name }) =>
+				<StyledItem
+					key={id}
+					variant={variant}
+					active={id === activeItemId}
+					onClick={() => onSetActiveItemId(id)}
+				>
+					{name}
+				</StyledItem>
+			)}
+		</StyledTab>
+	);
 };
 
 Tab.propTypes = {
-    variant: PropTypes.oneOf(['primary', 'secondary']).isRequired,
-    tabList: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        name: PropTypes.string.isRequired,
-    })).isRequired,
-    activeItemId: PropTypes.number.isRequired,
-    onSetActiveItemId: PropTypes.func,
+	variant: PropTypes.oneOf(['primary', 'secondary']).isRequired,
+	tabList: PropTypes.arrayOf(PropTypes.shape({
+		id: PropTypes.number.isRequired,
+		name: PropTypes.string.isRequired,
+	})).isRequired,
+	activeItemId: PropTypes.number.isRequired,
+	onSetActiveItemId: PropTypes.func,
 };
 
 export default Tab;

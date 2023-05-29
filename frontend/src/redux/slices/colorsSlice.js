@@ -12,11 +12,27 @@ export const fetchColorsBaseById = createAsyncThunk(
 		const resColors = await getColorsBaseById(colorsBaseId);
 		const colorsBase = _formattingBaseColors(resColors);
 		const colorsPalette = splittingColors(colorsBase);
-		return { colorsBase, colorsPalette };
+		return {
+			theme: resColors,
+			colorsBase,
+			colorsPalette
+		};
 	}
 )
 
+// export const fetchInstallTheme = createAsyncThunk(
+// 	'colors/install',
+// 	async (colorsBaseId, thunkAPI) => {
+// 		const resColors = await getColorsBaseById(colorsBaseId);
+// 		const colorsBase = _formattingBaseColors(resColors);
+// 		const colorsPalette = splittingColors(colorsBase);
+// 		return { colorsBase, colorsPalette };
+// 	}
+// )
+
 const initialState = {
+	theme: {},
+	themes: [],
 	base: {},
 	palette: {}
 }
@@ -24,18 +40,28 @@ const initialState = {
 const colorsSlice = createSlice({
 	name: 'colors',
 	initialState,
-	reducers: {},
+	reducers: {
+		addTheme(state, action) {
+			state.themes.push(action.payload);
+		},
+		remTheme(state, action) {
+			state.themes = state.themes.filter(item => item.id != action.payload)
+		}
+	},
 	extraReducers: (builder) => {
 		builder.addCase(fetchColorsBaseById.fulfilled, (state, action) => {
 			state.base = action.payload.colorsBase;
 			state.palette = action.payload.colorsPalette;
+			state.theme = action.payload.theme;
 		})
 		builder.addCase(fetchUserData.fulfilled, (state, action) => {
 			state.base = action.payload.colors.colorsBase;
-			state.palette = action.payload.colors.colorsPalette;;
+			state.palette = action.payload.colors.colorsPalette;
+			state.themes = action.payload.themes;
+			state.theme = action.payload.theme;
 		})
 	}
 })
 
-export const { } = colorsSlice.actions;
+export const { addTheme, remTheme } = colorsSlice.actions;
 export default colorsSlice.reducer;

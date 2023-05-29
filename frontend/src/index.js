@@ -12,12 +12,12 @@ import GlobalStyle from './styles/GlobalStyle';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <Provider store={store}>
-        <Theme>
-            <GlobalStyle />
-            <Router>
-                <App />
-            </Router>
-        </Theme>
-    </Provider>
+	<Provider store={store}>
+		<Theme>
+			<GlobalStyle />
+			<Router>
+				<App />
+			</Router>
+		</Theme>
+	</Provider>
 );

@@ -11,15 +11,15 @@ const StyledCustomH2 = styled.h2`
 `
 
 export default {
-    title: 'Card',
-    component: Card,
-    tags: ['autodocs'],
+	title: 'Card',
+	component: Card,
+	tags: ['autodocs'],
 };
 
 export const Primary = {
-    name: 'Primary Label',
-    args: {
-        cursor: 'pointer',
-        children: <StyledCustomH2>Проект "X"</StyledCustomH2>,
-    },
+	name: 'Primary Label',
+	args: {
+		cursor: 'pointer',
+		children: <StyledCustomH2>Проект "X"</StyledCustomH2>,
+	},
 };

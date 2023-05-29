@@ -30,45 +30,45 @@ const StyledButton = styled.button`
 	}};
 	cursor: pointer;
 
-	&:hover {
-		background: ${props => {
-			if (props.variant === 'primary') return props.theme.colors.primary50;
-			if (props.variant === 'secondary') return 'transparent';
-			if (props.variant === 'gost') return props.theme.colors.primary20;
-		}};
+  &:hover {
+    background: ${props => {
+		if (props.variant === 'primary') return props.theme.colors.primary50;
+		if (props.variant === 'secondary') return 'transparent';
+		if (props.variant === 'gost') return props.theme.colors.primary20;
+	}};
 		border: 2px solid ${props => {
-			if (props.variant === 'primary') return 'transparent';
-			if (props.variant === 'secondary') return props.theme.colors.primary40;
-			if (props.variant === 'gost') return 'transparent';
-		}};
-	}
+		if (props.variant === 'primary') return 'transparent';
+		if (props.variant === 'secondary') return props.theme.colors.primary40;
+		if (props.variant === 'gost') return 'transparent';
+	}};
+  }
 
 	&:active {
-		background: ${props => {
-			if (props.variant === 'primary') return props.theme.colors.primary100;
-			if (props.variant === 'secondary') return props.theme.colors.primary20;
-			if (props.variant === 'gost') return props.theme.colors.primary20;
-		}};
+    background: ${props => {
+		if (props.variant === 'primary') return props.theme.colors.primary100;
+		if (props.variant === 'secondary') return props.theme.colors.primary20;
+		if (props.variant === 'gost') return props.theme.colors.primary20;
+	}};
 		border: 2px solid ${props => {
-			if (props.variant === 'primary') return props.theme.colors.primary80;
-			if (props.variant === 'secondary') return 'transparent';
-			if (props.variant === 'gost') return 'transparent';
-		}};
-	}
+		if (props.variant === 'primary') return props.theme.colors.primary80;
+		if (props.variant === 'secondary') return 'transparent';
+		if (props.variant === 'gost') return 'transparent';
+	}};
+  }
 
-	&:disabled {
+  &:disabled {
 		background: ${props => {
-			if (props.variant === 'primary') return props.theme.colors.primary20;
-			if (props.variant === 'secondary') return props.theme.colors.primary10;
-			if (props.variant === 'gost') return 'transparent';
-		}};
+		if (props.variant === 'primary') return props.theme.colors.primary20;
+		if (props.variant === 'secondary') return props.theme.colors.primary10;
+		if (props.variant === 'gost') return 'transparent';
+	}};
 		border: 2px solid ${props => {
-			if (props.variant === 'primary') return 'transparent';
-			if (props.variant === 'secondary') return props.theme.colors.primary20;
-			if (props.variant === 'gost') return 'transparent';
-		}};
+		if (props.variant === 'primary') return 'transparent';
+		if (props.variant === 'secondary') return props.theme.colors.primary20;
+		if (props.variant === 'gost') return 'transparent';
+	}};
 		cursor: not-allowed;
-	}
+  }
 `;
 
 const StyledText = styled.span`
@@ -83,10 +83,10 @@ const StyledText = styled.span`
 	}};
 	${StyledButton}:disabled & {
 		color: ${props => {
-			if (props.variant === 'primary') return props.theme.colors.primary0;
-			if (props.variant === 'secondary') return props.theme.colors.primary40;
-			if (props.variant === 'gost') return props.theme.colors.primary40;
-		}};
+		if (props.variant === 'primary') return props.theme.colors.primary0;
+		if (props.variant === 'secondary') return props.theme.colors.primary40;
+		if (props.variant === 'gost') return props.theme.colors.primary40;
+	}};
 	}
 `
 
@@ -104,10 +104,10 @@ const StyledIcon = styled.div`
 	}};
 	${StyledButton}:disabled & {
 		background: ${props => {
-			if (props.variant === 'primary') return props.theme.colors.primary0;
-			if (props.variant === 'secondary') return props.theme.colors.primary40;
-			if (props.variant === 'gost') return props.theme.colors.primary40;
-		}};
+		if (props.variant === 'primary') return props.theme.colors.primary0;
+		if (props.variant === 'secondary') return props.theme.colors.primary40;
+		if (props.variant === 'gost') return props.theme.colors.primary40;
+	}};
 	}
 `
 

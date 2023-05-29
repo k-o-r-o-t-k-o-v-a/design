@@ -1,98 +1,109 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import styled from 'styled-components';
 
-// import { addWorkspaces } from '../redux/slices/workspacesSlice';
+import { addWorkspaces } from '../../redux/slices/workspacesSlice';
 import { api } from '../../services/api';
 import { useValidation } from '../../services/validation';
 
-import Title from '../../components/title/Title';
 import Input from '../../components/input/Input';
 import Button from '../../components/buttons/button/Button';
-import { useNavigate } from 'react-router-dom';
-import { fetchCreateWorkspace } from '../../redux/slices/workspacesSlice';
+import BaseLayout from '../../layout/BaseLayout';
+import { StyledErrorWrapper, StyledForm, StyledWrapperInput } from '../../styles/BaseStyleElements';
+import Error from '../../components/error/Error';
 
-const StyledFrom = styled.form`
-	margin: 24px 0 0;
-`;
-
-const StyledInputWrapper = styled.div`
-	margin: 20px;
-`;
 
 const WorkspacesCreatePage = () => {
-    const navigate = useNavigate();
+	const navigate = useNavigate();
 
-    const [workspaceName, setWorkspaceName] = useState('');
-    const [isCorrectWorkspaceName, setIsCorrectWorkspaceName] = useState(null);
-    const [workspaceNameErrorMessage, setWorkspaceNameErrorMessage] = useState(null);
+	const [error, setError] = useState({ status: false, message: '' })
 
-    const dispatch = useDispatch();
+	const [workspaceName, setWorkspaceName] = useState('');
+	const [isCorrectWorkspaceName, setIsCorrectWorkspaceName] = useState(null);
+	const [workspaceNameErrorMessage, setWorkspaceNameErrorMessage] = useState(null);
 
-    const { createWorkspace } = api();
-    const { validationNotEmpty } = useValidation();
+	const dispatch = useDispatch();
 
-    const handleSetValue = (setValue, value) => {
-        // Todo:
-        setValue(value);
-    }
+	const { createWorkspace } = api();
+	const { validationNotEmpty } = useValidation();
 
-    const handleBlur = (value, validation, correct, setCorrect, setErrorMessage) => {
-        const isValid = validation(value);
-        if (isValid !== true) {
-            setCorrect(false);
-            setErrorMessage({ title: isValid });
-        } else if (correct === false) {
-            setCorrect(true);
-        }
-        return isValid;
-    }
+	const handleSetValue = (setValue, value) => {
+		setValue(value);
+	}
 
-    const handleBlurWorkspaceName = () => {
-        return handleBlur(
-            workspaceName,
-            validationNotEmpty,
-            isCorrectWorkspaceName,
-            setIsCorrectWorkspaceName,
-            setWorkspaceNameErrorMessage,
-        );
-    }
+	const handleBlur = (value, validation, correct, setCorrect, setErrorMessage) => {
+		const isValid = validation(value);
+		if (isValid !== true) {
+			setCorrect(false);
+			setErrorMessage({ title: isValid });
+		} else if (correct === false) {
+			setCorrect(true);
+		}
+		return isValid;
+	}
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // dispatch(fetchCreateWorkspace({ name: workspaceName }))
-        createWorkspace({ name: workspaceName })
-            .then(res => {
-                navigate(`/workspaces/${res.id}`)
-            })
-        // .then(res => {
-        // 	console.log('Create workspace ok', res);
-        // });
-    }
+	const handleBlurWorkspaceName = () => {
+		return handleBlur(
+			workspaceName,
+			validationNotEmpty,
+			isCorrectWorkspaceName,
+			setIsCorrectWorkspaceName,
+			setWorkspaceNameErrorMessage,
+		);
+	}
 
-    return (
-        <>
-            <Title text="Создайте рабочее пространство" />
-            <StyledFrom onSubmit={handleSubmit}>
-                <StyledInputWrapper>
-                    <Input
-                        label="Название рабочего пространства"
-                        value={workspaceName}
-                        setValue={(value) => handleSetValue(setWorkspaceName, value)}
-                        success={isCorrectWorkspaceName === null ? false : isCorrectWorkspaceName}
-                        error={isCorrectWorkspaceName === null ? false : !isCorrectWorkspaceName}
-                        errorMessage={workspaceNameErrorMessage}
-                        onBlur={handleBlurWorkspaceName}
-                    />
-                </StyledInputWrapper>
-                <Button
-                    label="Создать"
-                    variant='primary'
-                    onClick={handleSubmit}
-                />
-            </StyledFrom>
-        </>
-    );
+	const handleSubmit = (e) => {
+		e.preventDefault();
+
+		setError({ status: false })
+
+		createWorkspace({ name: workspaceName })
+			.then((res) => {
+				if (res.status === 'success') {
+					dispatch(addWorkspaces(res.data));
+					navigate(`/workspaces/${res.data.id}`)
+				} else {
+					setError({
+						status: true,
+						message: res?.errors[0]?.message || 'Клиентская ошибка'
+					})
+				}
+			})
+			.catch(() => {
+				setError({
+					status: true,
+					message: 'Ошибка сервера'
+				})
+			})
+	}
+
+	return (
+		<BaseLayout title="Создайте рабочее пространство">
+			<StyledForm onSubmit={handleSubmit}>
+				{error.status &&
+					<StyledErrorWrapper>
+						<Error text={error.message} />
+					</StyledErrorWrapper>
+				}
+				<StyledWrapperInput>
+					<Input
+						label="Название рабочего пространства"
+						value={workspaceName}
+						setValue={(value) => handleSetValue(setWorkspaceName, value)}
+						success={isCorrectWorkspaceName === null ? false : isCorrectWorkspaceName}
+						error={isCorrectWorkspaceName === null ? false : !isCorrectWorkspaceName}
+						errorMessage={workspaceNameErrorMessage}
+						onBlur={handleBlurWorkspaceName}
+					/>
+				</StyledWrapperInput>
+				<Button
+					label="Создать"
+					variant='primary'
+					onClick={handleSubmit}
+				/>
+			</StyledForm>
+		</BaseLayout>
+	);
 };
 
 export default WorkspacesCreatePage;

@@ -1,116 +1,152 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import styled from 'styled-components';
 
 import { setIsAuth } from '../../redux/slices/userSlice';
 import { api } from '../../services/api';
 import { useValidation } from '../../services/validation';
 
+import Error from '../../components/error/Error';
+import Title from '../../components/title/Title';
 import Input from '../../components/input/Input';
 import Button from '../../components/buttons/button/Button';
-
-const StyledInputWrapper = styled.div`
-	margin: 20px;
-`
+import {
+	StyledWrapperSection,
+	StyledForm,
+	StyledWrapperInput,
+	StyledRowBtn,
+	StyledErrorWrapper,
+} from '../../styles/BaseStyleElements';
 
 const LoginPage = () => {
-    // let navigate = useNavigate();
+	const navigate = useNavigate();
 
-    const dispatch = useDispatch()
+	const [error, setError] = useState({ status: false, message: 'Ошибка' })
 
-    const [username, setUsername] = useState('');
-    const [isCorrectUsername, setIsCorrectUsername] = useState(null);
-    const [userNameErrorMessage, setUserNameErrorMessage] = useState(null);
+	const [username, setUsername] = useState('');
+	const [isCorrectUsername, setIsCorrectUsername] = useState(null);
+	const [userNameErrorMessage, setUserNameErrorMessage] = useState(null);
 
-    const [password, setPassword] = useState('');
-    const [isCorrectPassword, setIsCorrectPassword] = useState(null);
-    const [passwordErrorMessage, setPasswordErrorMessage] = useState(null);
+	const [password, setPassword] = useState('');
+	const [isCorrectPassword, setIsCorrectPassword] = useState(null);
+	const [passwordErrorMessage, setPasswordErrorMessage] = useState(null);
 
-    const { loginUser } = api();
-    const { validationUsername, validationPassword } = useValidation();
+	const dispatch = useDispatch()
 
-    const handleSetValue = (setValue, value) => {
-        // Todo:
-        setValue(value);
-    }
+	const { loginUser } = api();
+	const { validationUsername, validationPassword } = useValidation();
 
-    const handleBlur = (value, validation, correct, setCorrect, setErrorMessage) => {
-        const isValid = validation(value);
-        if (isValid !== true) {
-            setCorrect(false);
-            setErrorMessage({ title: isValid });
-        } else if (correct === false) {
-            setCorrect(true);
-        }
-        return isValid;
-    }
+	const handleSetValue = (setValue, value) => {
+		setValue(value);
+	}
 
-    const handleBlurUsername = () => {
-        return handleBlur(
-            username,
-            validationUsername,
-            isCorrectUsername,
-            setIsCorrectUsername,
-            setUserNameErrorMessage,
-        );
-    }
+	const handleBlur = (value, validation, correct, setCorrect, setErrorMessage) => {
+		const isValid = validation(value);
+		if (isValid !== true) {
+			setCorrect(false);
+			setErrorMessage({ title: isValid });
+		} else if (correct === false) {
+			setCorrect(true);
+		}
+		return isValid;
+	}
 
-    const handleBlurPassword = () => {
-        return handleBlur(
-            password,
-            validationPassword,
-            isCorrectPassword,
-            setIsCorrectPassword,
-            setPasswordErrorMessage,
-        );
-    }
+	const handleBlurUsername = () => {
+		return handleBlur(
+			username,
+			validationUsername,
+			isCorrectUsername,
+			setIsCorrectUsername,
+			setUserNameErrorMessage,
+		);
+	}
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+	const handleBlurPassword = () => {
+		return handleBlur(
+			password,
+			validationPassword,
+			isCorrectPassword,
+			setIsCorrectPassword,
+			setPasswordErrorMessage,
+		);
+	}
 
-        loginUser({ username, password })
-            .then(res => {
-                localStorage.setItem('token', res.token);
-                dispatch(setIsAuth(true));
-            })
-            .catch(res => {
-                console.log(`Error: ${res}`);
-            })
-    }
+	const handleSubmit = (e) => {
+		e.preventDefault();
 
-    return (
-        <form onSubmit={handleSubmit}>
-            <StyledInputWrapper>
-                <Input
-                    label="Имя пользователя"
-                    value={username}
-                    setValue={(value) => handleSetValue(setUsername, value)}
-                    success={isCorrectUsername === null ? false : isCorrectUsername}
-                    error={isCorrectUsername === null ? false : !isCorrectUsername}
-                    errorMessage={userNameErrorMessage}
-                    onBlur={handleBlurUsername}
-                />
-            </StyledInputWrapper>
-            <StyledInputWrapper>
-                <Input
-                    label="Пароль"
-                    type="password"
-                    value={password}
-                    setValue={(value) => handleSetValue(setPassword, value)}
-                    success={isCorrectPassword === null ? false : isCorrectPassword}
-                    error={isCorrectPassword === null ? false : !isCorrectPassword}
-                    errorMessage={passwordErrorMessage}
-                    onBlur={handleBlurPassword}
-                />
-            </StyledInputWrapper>
-            <Button
-                label="Войти"
-                variant='primary'
-                onClick={handleSubmit}
-            />
-        </form>
-    );
+		setError({ status: false });
+
+		if (handleBlurUsername() !== true) return;
+		if (handleBlurPassword() !== true) return;
+
+		loginUser({ username, password })
+			.then((res) => {
+				if (res.status === 'success') {
+					localStorage.setItem('token', res.token);
+					dispatch(setIsAuth(true));
+					navigate('/workspaces');
+				} else {
+					setError({
+						status: true,
+						message: res?.errors[0]?.message || 'Клиентская ошибка'
+					})
+				}
+			})
+			.catch(() => {
+				setError({
+					status: true,
+					message: 'Ошибка сервера'
+				})
+			})
+	}
+
+	return (
+		<StyledWrapperSection>
+			<Title text="Вход" />
+			<StyledForm onSubmit={handleSubmit}>
+				{error.status &&
+					<StyledErrorWrapper>
+						<Error text={error.message} />
+					</StyledErrorWrapper>
+				}
+				<StyledWrapperInput>
+					<Input
+						label="Имя пользователя"
+						value={username}
+						setValue={(value) => handleSetValue(setUsername, value)}
+						success={isCorrectUsername === null ? false : isCorrectUsername}
+						error={isCorrectUsername === null ? false : !isCorrectUsername}
+						errorMessage={userNameErrorMessage}
+						onBlur={handleBlurUsername}
+					/>
+				</StyledWrapperInput>
+				<StyledWrapperInput>
+					<Input
+						label="Пароль"
+						type="password"
+						value={password}
+						setValue={(value) => handleSetValue(setPassword, value)}
+						success={isCorrectPassword === null ? false : isCorrectPassword}
+						error={isCorrectPassword === null ? false : !isCorrectPassword}
+						errorMessage={passwordErrorMessage}
+						onBlur={handleBlurPassword}
+					/>
+				</StyledWrapperInput>
+				<StyledRowBtn>
+					<Button
+						label="Войти"
+						variant='primary'
+						onClick={handleSubmit}
+					/>
+					<Button
+						label="Регистрация"
+						variant='secondary'
+						onClick={() => navigate('/auth/register')}
+					/>
+				</StyledRowBtn>
+			</StyledForm>
+		</StyledWrapperSection>
+	);
 };
 
 export default LoginPage;

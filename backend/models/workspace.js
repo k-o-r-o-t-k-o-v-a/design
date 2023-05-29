@@ -19,12 +19,6 @@ Workspace.init({
 	}
 });
 
-// Workspace.hasMany(Board, {
-// 	// foreignKey: {
-// 	// 	name: 'boards',
-// 	// }
-// });
-
 Workspace.belongsTo(User, {
 	foreignKey: {
 		name: 'owner_id',

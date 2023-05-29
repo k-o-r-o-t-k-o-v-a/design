@@ -9,7 +9,7 @@ const StyledH1 = styled.h1`
 `
 
 const Title = ({ text }) => {
-    return <StyledH1>{text}</StyledH1>
+	return <StyledH1>{text}</StyledH1>
 };
 
 export default Title;

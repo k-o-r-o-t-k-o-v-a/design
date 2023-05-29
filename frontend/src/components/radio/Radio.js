@@ -17,42 +17,42 @@ const StyledRadio = styled.div`
 
 	:hover {
 		background: ${props => {
-			if (props.disabled && !props.checked)
-				return props.theme.colors.primary10;
-			return props.theme.colors.primary0;
-		}};
+		if (props.disabled && !props.checked)
+			return props.theme.colors.primary10;
+		return props.theme.colors.primary0;
+	}};
 	}
 
 	:active {
 		padding: 2px;
 		background: ${props => {
-			if (props.disabled && !props.checked)
-				return props.theme.colors.primary10;
-			return props.theme.colors.primary0;
-		}};
+		if (props.disabled && !props.checked)
+			return props.theme.colors.primary10;
+		return props.theme.colors.primary0;
+	}};
 	}
 
 
 	:hover > div {
 		background: ${props => {
-			if (props.checked && props.disabled)
-				return props.theme.colors.primary20;
-			if (props.checked && !props.disabled)
-				return props.theme.colors.primary50;
-			if (!props.checked && props.disabled)
-				return props.theme.colors.primary10;
+		if (props.checked && props.disabled)
 			return props.theme.colors.primary20;
-		}};
+		if (props.checked && !props.disabled)
+			return props.theme.colors.primary50;
+		if (!props.checked && props.disabled)
+			return props.theme.colors.primary10;
+		return props.theme.colors.primary20;
+	}};
 	}
 
 	:active > div {
 		background: ${props => {
-			if (props.checked && props.disabled)
-				return props.theme.colors.primary20;
-			if (!props.checked && props.disabled)
-				return props.theme.colors.primary10;
-			return props.theme.colors.primary0;
-		}}
+		if (props.checked && props.disabled)
+			return props.theme.colors.primary20;
+		if (!props.checked && props.disabled)
+			return props.theme.colors.primary10;
+		return props.theme.colors.primary0;
+	}}
 	}
 `
 

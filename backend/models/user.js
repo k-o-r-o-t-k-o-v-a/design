@@ -10,6 +10,7 @@ User.init({
 		type: DataTypes.STRING(50),
 		allowNull: false,
 		unique: {
+			args: true,
 			msg: 'Это имя пользователя уже занято',
 		},
 		validate: {
@@ -18,7 +19,7 @@ User.init({
 				msg: 'Имя пользователя должно содержать от 4 до 50 символов',
 			},
 			is: {
-				args: /^[a-z]*$/,
+				args: /^[a-zA-Z0-9_]{3,20}$/,
 				msg:
 					'Имя пользователя может содержать латинские буквы, цифры и подчёркивание',
 			},
@@ -31,15 +32,6 @@ User.init({
 		type: DataTypes.STRING,
 		allowNull: false,
 		validate: {
-			len: {
-				args: [8, 254],
-				msg: 'Пароль должен содержать от 8 до 254 символов',
-			},
-			// is: {
-			// 	args: /^[a-zA-Z0-9_!@#$%^&*]+$/,
-			// 	msg:
-			// 		'Пароль может содержать латинские буквы, цифры и специальные символы',
-			// },
 			notEmpty: {
 				msg: 'Укажите пароль',
 			},
@@ -117,10 +109,10 @@ User.belongsTo(BaseColors, {
 	}
 });
 
-User.belongsToMany(BaseColors, {
-	through: 'themes',
-	onDelete: 'CASCADE'
-});
+// User.belongsToMany(BaseColors, {
+// 	through: 'themes',
+// 	onDelete: 'CASCADE'
+// });
 
 // User.beforeDestroy(async (user, options) => {
 // 	if (user.image && fs.existsSync(user.image)) {

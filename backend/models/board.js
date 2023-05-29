@@ -10,10 +10,6 @@ Board.init({
 		type: DataTypes.STRING(50),
 		allowNull: false,
 	},
-	// position: {
-	// 	type: DataTypes.INTEGER,
-	// 	allowNull: false,
-	// },
 }, {
 	sequelize,
 	modelName: 'board',
@@ -27,7 +23,8 @@ Board.belongsTo(Workspace, {
 		name: 'workspace_id',
 		type: DataTypes.INTEGER,
 		allowNull: false,
-	}
+	},
+	onDelete: 'CASCADE'
 });
 
 Workspace.hasMany(Board, {

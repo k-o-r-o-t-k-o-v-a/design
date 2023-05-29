@@ -46,30 +46,30 @@ const StyledQuantity = styled.span`
 `;
 
 const ColumnHeader = ({ title, fixed, quantity, ...provided }) => {
-    return (
-        <StyledColumnHeader {...provided}>
-            <StyledWrapperLeft>
-                <StyledTitle>{title}</StyledTitle>
-                <StyledIcon
-                    fixed={fixed}
-                    src={fixedIcon}
-                    alt="fixed"
-                />
-            </StyledWrapperLeft>
-            <StyledQuantity>{quantity}</StyledQuantity>
-        </StyledColumnHeader>
-    );
+	return (
+		<StyledColumnHeader {...provided}>
+			<StyledWrapperLeft>
+				<StyledTitle>{title}</StyledTitle>
+				<StyledIcon
+					fixed={fixed}
+					src={fixedIcon}
+					alt="fixed"
+				/>
+			</StyledWrapperLeft>
+			<StyledQuantity>{quantity}</StyledQuantity>
+		</StyledColumnHeader>
+	);
 };
 
 ColumnHeader.propTypes = {
-    title: PropTypes.string.isRequired,
-    fixed: PropTypes.bool,
-    quantity: PropTypes.number,
+	title: PropTypes.string.isRequired,
+	fixed: PropTypes.bool,
+	quantity: PropTypes.number,
 };
 
 ColumnHeader.defaultProps = {
-    fixed: false,
-    quantity: undefined,
+	fixed: false,
+	quantity: undefined,
 };
 
 export default ColumnHeader;

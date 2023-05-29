@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-import iconArrowDown from './../../../assets/icons/arrowDown.svg';
+import iconArrowDown from '../../../assets/icons/arrowDown.svg';
 
 const StyledSelect = styled.div`
 	position: relative;
@@ -14,17 +14,21 @@ const StyledValue = styled.div`
 	justify-content: space-between;
 	align-items: center;
 	gap: 10px;
-	padding: 6px 10.4px 6px 22px;
+  padding: 6px 10.4px 6px 22px;
 	background: ${props => props.theme.colors.primary0};
-	border: 2px solid ${props => props.theme.colors.primary20};
-	border-radius: 22px;
-	cursor: pointer;
+  /* border: 2px solid ${props => props.theme.colors.primary20}; */
+  border-radius: 22px;
+  cursor: pointer;
+
+	border-radius: 4px;
+	border: 1px solid ${props => props.theme.colors.primary20};
+	height: 48px;
 `;
 
 const StyledValueText = styled.span`
 	overflow: hidden;
-	white-space: nowrap;
-	text-overflow: ellipsis;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 	font-family: 'Montserrat';
 	font-weight: 400;
 	font-size: 14px;
@@ -40,38 +44,39 @@ const StyledValueIcon = styled.img`
 const StyledDropdown = styled.div`
 	overflow: hidden;
 	position: absolute;
-	top: calc(100% + 5px);
-	left: 0;
-	right: 0;
+  top: calc(100% + 5px);
+  left: 0;
+  right: 0;
 	max-height: 76px;
-	overflow-y: auto;
+  overflow-y: auto;
 	border-top: 8px solid ${props => props.theme.colors.primary0};
 	border-bottom: 8px solid ${props => props.theme.colors.primary0};
 	background: ${props => props.theme.colors.primary0};
 	box-shadow: 0px 4px 8px -2px rgba(147, 147, 163, 0.24), 0px 1px 4px -1px rgba(147, 147, 163, 0.08);
 	border-radius: 4px;
+	z-index: 9;
 
 	/* кастомный скролл */
 	scroll-behavior: smooth;
 	scrollbar-width: 4px;
 	border-radius: 2px;
-	scrollbar-color: ${props => props.theme.colors.primary80};
+  scrollbar-color: ${props => props.theme.colors.primary80};
 
-	&::-webkit-scrollbar {
-		width: 4px;
-	}
-
-	&::-webkit-scrollbar-thumb {
-		background-color: ${props => props.theme.colors.primary80};
-		border-radius: 2px;
-	}
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background-color: ${props => props.theme.colors.primary80};
+    border-radius: 2px;
+  }
 `;
 
 const StyledOptionItem = styled.span`
 	display: block;
 	overflow: hidden;
-	white-space: nowrap;
-	text-overflow: ellipsis;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 	font-family: 'Montserrat';
 	font-weight: 400;
 	font-size: 14px;
@@ -80,9 +85,9 @@ const StyledOptionItem = styled.span`
 	color: ${props => props.theme.colors.primary80};
 	cursor: pointer;
 
-	&:hover {
+  &:hover {
 		background-color: ${props => props.theme.colors.primary10};
-	}
+  }
 `;
 
 const Select = ({ defaultValue, options, onChange }) => {
@@ -96,6 +101,10 @@ const Select = ({ defaultValue, options, onChange }) => {
 			document.removeEventListener("click", handleClickOutside, true);
 		};
 	}, []);
+
+	useEffect(() => {
+		setSelectedOption(defaultValue);
+	}, [defaultValue])
 
 	const handleClickOutside = (event) => {
 		if (selectRef.current && !selectRef.current.contains(event.target)) {

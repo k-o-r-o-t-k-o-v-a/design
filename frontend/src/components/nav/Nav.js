@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { PropTypes } from 'prop-types';
 
-import arrowDown from './../../assets/icons/arrowDown.svg';
+import arrowDown from '../../assets/icons/arrowDown.svg';
 
 
 const StyledLink = styled.div`
@@ -68,10 +68,12 @@ const StyledLinkText = styled.span`
 `;
 
 const StyledNested = styled.ul`
+
 	display: ${props => props.open ? 'block' : 'none'};
 `;
 
 const StyledNestedItem = styled.li`
+	position: relative;
 	padding: 12px 18px 12px 40px;
 	font-family: 'Montserrat';
 	font-weight: 400;
@@ -91,87 +93,98 @@ const StyledNestedIcon = styled.img`
 	transform: ${props => props.open ? 'rotate(0)' : 'rotate(-90deg)'};
 `;
 
+const StyledLinkAdditionalActive = styled.div`
+	position: absolute;
+	top: 17px;
+	left: 24px;
+	width: 8px;
+	height: 8px;
+	border-radius: 2px;
+	background: ${props => props.theme.colors.succsess50};
+`;
+
 const Nav = ({ navLinks }) => {
-    const navigate = useNavigate();
+	const navigate = useNavigate();
 
-    const [openIndex, setOpenIndex] = useState(-1);
+	const [openIndex, setOpenIndex] = useState(-1);
 
-    const handleItemClick = (index) => {
-        setOpenIndex(index === openIndex ? -1 : index);
-    }
+	const handleItemClick = (index) => {
+		setOpenIndex(index === openIndex ? -1 : index);
+	}
 
-    const handleAdditionalLinkClick = (e, path) => {
-        e.preventDefault();
-        e.stopPropagation();
+	const handleAdditionalLinkClick = (e, path) => {
+		e.preventDefault();
+		e.stopPropagation();
 
-        navigate(path);
-    }
+		navigate(path);
+	}
 
-    return (
-        <nav>
-            <ul>
-                {navLinks.map(({ name, path, additionalLink, icon, nested }, index) =>
-                    <li key={name}>
-                        <StyledLink
-                            onClick={
-                                nested ?
-                                    () => handleItemClick(index) :
-                                    () => navigate(path)
-                            }
-                        >
-                            <StyledLeft>
-                                <StyledLinkIcon icon={icon} />
-                                <StyledLinkText>{name}</StyledLinkText>
-                            </StyledLeft>
-                            <StyledRight>
-                                {additionalLink &&
-                                    <StyledLinkAdditional
-                                        icon={additionalLink.icon}
-                                        onClick={(e) => handleAdditionalLinkClick(e, additionalLink.path)}
-                                    />
-                                }
-                                {nested &&
-                                    <StyledNestedIcon
-                                        open={index === openIndex}
-                                        src={arrowDown}
-                                        alt="arrow"
-                                    />
-                                }
-                            </StyledRight>
-                        </StyledLink>
-                        {nested &&
-                            <StyledNested open={index === openIndex}>
-                                {nested.map(({ name, path }) =>
-                                    <StyledNestedItem
-                                        key={name}
-                                        onClick={() => navigate(path)}
-                                    >
-                                        {name}
-                                    </StyledNestedItem>
-                                )}
-                            </StyledNested>
-                        }
-                    </li>
-                )}
-            </ul>
-        </nav>
-    );
+	return (
+		<nav>
+			<ul>
+				{navLinks.map(({ name, path, additionalLink, icon, nested }, index) =>
+					<li key={name}>
+						<StyledLink
+							onClick={
+								nested ?
+									() => handleItemClick(index) :
+									() => navigate(path)
+							}
+						>
+							<StyledLeft>
+								<StyledLinkIcon icon={icon} />
+								<StyledLinkText>{name}</StyledLinkText>
+							</StyledLeft>
+							<StyledRight>
+								{additionalLink &&
+									<StyledLinkAdditional
+										icon={additionalLink.icon}
+										onClick={(e) => handleAdditionalLinkClick(e, additionalLink.path)}
+									/>
+								}
+								{nested &&
+									<StyledNestedIcon
+										open={index === openIndex}
+										src={arrowDown}
+										alt="arrow"
+									/>
+								}
+							</StyledRight>
+						</StyledLink>
+						{nested &&
+							<StyledNested open={index === openIndex}>
+								{nested.map(({ name, path, active }) =>
+									<StyledNestedItem
+										key={name}
+										onClick={() => navigate(path)}
+									>
+										{active && <StyledLinkAdditionalActive />}
+										{name}
+									</StyledNestedItem>
+								)}
+							</StyledNested>
+						}
+					</li>
+				)}
+			</ul>
+		</nav>
+	);
 };
 
 Nav.propTypes = {
-    links: PropTypes.arrayOf(PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        path: PropTypes.string,
-        additionalLink: PropTypes.shape({
-            icon: PropTypes.string.isRequired,
-            path: PropTypes.string.isRequired,
-        }),
-        icon: PropTypes.string.isRequired,
-        nested: PropTypes.arrayOf(PropTypes.shape({
-            name: PropTypes.string.isRequired,
-            path: PropTypes.string.isRequired,
-        }))
-    })),
+	links: PropTypes.arrayOf(PropTypes.shape({
+		name: PropTypes.string.isRequired,
+		path: PropTypes.string,
+		additionalLink: PropTypes.shape({
+			icon: PropTypes.string.isRequired,
+			path: PropTypes.string.isRequired,
+		}),
+		icon: PropTypes.string.isRequired,
+		nested: PropTypes.arrayOf(PropTypes.shape({
+			name: PropTypes.string.isRequired,
+			path: PropTypes.string.isRequired,
+		}))
+	})),
 };
 
 export default Nav;

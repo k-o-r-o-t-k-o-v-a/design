@@ -24,19 +24,19 @@ const StyledButton = styled.button`
 	cursor: ${props => props.active ? 'default' : 'pointer'};
 
 	&:hover {
-		background: ${props => props.active ?
-			props.theme.colors.primary80 :
-			props.theme.colors.primary10
-		};
-	}
+	background: ${props => props.active ?
+		props.theme.colors.primary80 :
+		props.theme.colors.primary10
+	};
+}
 `
 
 const StyledText = styled.span`
-	font-family: 'Montserrat';
-	font-weight: 400;
-	font-size: 14px;
-	line-height: 16px;
-	color: ${props => props.active ?
+font-family: 'Montserrat';
+font-weight: 400;
+font-size: 14px;
+line-height: 16px;
+color: ${props => props.active ?
 		props.theme.colors.primary0 :
 		props.theme.colors.primary90
 	};
